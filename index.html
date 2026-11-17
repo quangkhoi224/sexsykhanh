@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anh Sy Khanh</title>
+    
+    <!-- Tích hợp Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cấu hình Tailwind cho Dark mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Google Inter & Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        /* Tùy chỉnh thêm CSS cho hiệu ứng mượt mà */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Đảm bảo ảnh trong Masonry không bị cắt ngang */
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Ẩn phần tử khi bị lọc */
+        .hide-item {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Gradient chữ nổi bật */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1f2937; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen relative">
+
+    <!-- Header & Nút Dark/Light Mode -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="font-bold text-xl tracking-tight">Gallery<span class="text-blue-500">.</span></div>
+            
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors focus:outline-none flex items-center justify-center">
+                <span id="themeIcon" class="material-icons text-xl">dark_mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="pt-32 pb-12 sm:pt-40 sm:pb-16 px-4 text-center">
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4 text-gradient">
+            Ảnh sex
+        </h1>
+    </section>
+
+    <!-- Filter Menu -->
+    <section class="max-w-7xl mx-auto px-4 mb-8">
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-4" id="filterMenu">
+            <button data-filter="all" class="filter-btn active px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 shadow-md">Tất cả</button>
+            <button data-filter="por" class="filter-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 shadow-sm border border-gray-200 dark:border-gray-700">Chân dung</button>
+            <button data-filter="landscape" class="filter-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 shadow-sm border border-gray-200 dark:border-gray-700">Ảnh nude</button>
+            <button data-filter="vid" class="filter-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 shadow-sm border border-gray-200 dark:border-gray-700">Video</button>
+        </div>
+    </section>
+
+    <!-- Gallery Masonry Grid -->
+    <section class="max-w-7xl mx-auto px-4 pb-20">
+        <!-- Sử dụng CSS columns thông qua class của Tailwind: 1 cột mobile, 2 cột tablet, 3 cột desktop nhỏ, 4 cột desktop lớn -->
+        <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4" id="galleryContainer">
+            
+            <!-- Items (Ảnh và Video) được định nghĩa category bằng data-category -->
+            
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="por">
+                <img src="images/anh1.jpeg" alt="por" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="por">
+                <img src="images/anh2.jpeg" alt="por" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh3.jpeg" alt="por" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="por">
+                <img src="images/anh4.jpeg" alt="por" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="por">
+                <img src="images/anh5.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh6.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="por">
+                <img src="images/anh7.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="por">
+                <img src="images/anh8.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh9.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh10.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh11.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh12.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh13.jpeg" alt="por" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh14.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh15.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh16.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh17.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh18.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh19.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="landscape">
+                <img src="images/anh20.jpeg" alt="Landscape" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 loading='lazy'">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            </div>
+            <!-- Video Item -->
+            <div class="masonry-item relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-200 dark:bg-gray-800" data-category="vid">
+                <!-- Video trong grid không hiện control, tự động play khi hover -->
+                <video src="images/vid1.mp4" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 grid-video" muted loop playsinline poster="https://picsum.photos/600/350?random=100"></video>
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                    <span class="material-icons text-white text-5xl opacity-80 group-hover:opacity-100 transition-opacity drop-shadow-md">play_circle</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-gray-500 dark:text-gray-400 text-sm border-t border-gray-200 dark:border-gray-800">
+        <p>&copy; 2026 Ảnh sex sỹ khánh.</p>
+    </footer>
+
+    <!-- Lightbox Overlay -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+        <!-- Nút Đóng -->
+        <button id="closeLightbox" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-400 hover:text-white focus:outline-none transition-colors z-50">
+            <span class="material-icons text-4xl">close</span>
+        </button>
+
+        <!-- Container chứa nội dung hiển thị (Img/Video) -->
+        <div class="relative w-full max-w-5xl max-h-[90vh] flex items-center justify-center p-4">
+            <!-- Ảnh -->
+            <img id="lightboxImg" src="" alt="Enlarged view" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl hidden object-contain">
+            
+            <!-- Video -->
+            <video id="lightboxVideo" src="" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl hidden outline-none" controls></video>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --------------------------------------------------------
+            // 1. Chức năng Chuyển đổi Dark/Light Mode
+            // --------------------------------------------------------
+            const htmlElement = document.documentElement;
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Kiểm tra trạng thái đã lưu hoặc hệ thống
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                htmlElement.classList.add('dark');
+                themeIcon.textContent = 'light_mode';
+            } else {
+                htmlElement.classList.remove('dark');
+                themeIcon.textContent = 'dark_mode';
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark');
+                if (htmlElement.classList.contains('dark')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.textContent = 'light_mode';
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.textContent = 'dark_mode';
+                }
+            });
+
+            // --------------------------------------------------------
+            // 2. Chức năng Filter (Lọc danh mục)
+            // --------------------------------------------------------
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.masonry-item');
+
+            // Style class tĩnh cho nút Active / Inactive
+            const activeClasses = ['bg-gray-900', 'text-white', 'dark:bg-gray-100', 'dark:text-gray-900', 'shadow-md'];
+            const inactiveClasses = ['bg-white', 'text-gray-700', 'hover:bg-gray-200', 'dark:bg-gray-800', 'dark:text-gray-300', 'dark:hover:bg-gray-700', 'shadow-sm', 'border', 'border-gray-200', 'dark:border-gray-700'];
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    // Reset style các nút
+                    filterBtns.forEach(b => {
+                        b.classList.remove(...activeClasses);
+                        b.classList.add(...inactiveClasses);
+                    });
+                    
+                    // Set style nút đang chọn
+                    btn.classList.remove(...inactiveClasses);
+                    btn.classList.add(...activeClasses);
+
+                    // Lọc Item
+                    galleryItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.classList.remove('hide-item');
+                        } else {
+                            item.classList.add('hide-item');
+                        }
+                    });
+                });
+            });
+
+            // --------------------------------------------------------
+            // 3. Hover Video Tự Chạy (Grid)
+            // --------------------------------------------------------
+            const gridVideos = document.querySelectorAll('.grid-video');
+            gridVideos.forEach(video => {
+                // Di chuột vào thì play
+                video.parentElement.addEventListener('mouseenter', () => {
+                    video.play().catch(e => console.log("Lỗi autoplay", e));
+                });
+                // Rời chuột ra thì dừng
+                video.parentElement.addEventListener('mouseleave', () => {
+                    video.pause();
+                });
+            });
+
+            // --------------------------------------------------------
+            // 4. Chức năng Lightbox (Xem phóng to)
+            // --------------------------------------------------------
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxVideo = document.getElementById('lightboxVideo');
+            const closeLightboxBtn = document.getElementById('closeLightbox');
+
+            function openLightbox() {
+                lightbox.classList.remove('hidden');
+                // Timeout nhỏ để transition opacity hoạt động
+                setTimeout(() => {
+                    lightbox.classList.remove('opacity-0');
+                    lightbox.classList.add('opacity-100');
+                }, 10);
+                document.body.style.overflow = 'hidden'; // Khóa cuộn trang nền
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('opacity-100');
+                lightbox.classList.add('opacity-0');
+                setTimeout(() => {
+                    lightbox.classList.add('hidden');
+                    // Reset nội dung
+                    lightboxImg.classList.add('hidden');
+                    lightboxVideo.classList.add('hidden');
+                    lightboxVideo.pause(); 
+                    lightboxVideo.src = "";
+                }, 300); // Khớp với duration-300
+                document.body.style.overflow = 'auto'; // Mở lại cuộn trang
+            }
+
+            // Gắn event click cho các items
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgEl = item.querySelector('img');
+                    const vidEl = item.querySelector('video');
+
+                    if (imgEl) {
+                        lightboxImg.src = imgEl.src;
+                        lightboxImg.classList.remove('hidden');
+                    } else if (vidEl) {
+                        lightboxVideo.src = vidEl.src;
+                        lightboxVideo.classList.remove('hidden');
+                        lightboxVideo.play(); // Tự động phát khi mở lightbox (có control)
+                    }
+                    openLightbox();
+                });
+            });
+
+            // Đóng bằng nút X
+            closeLightboxBtn.addEventListener('click', closeLightbox);
+
+            // Đóng bằng cách click ra ngoài viền
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target.parentElement === lightbox && e.target !== lightboxImg && e.target !== lightboxVideo) {
+                    closeLightbox();
+                }
+            });
+
+            // Đóng bằng nút ESC trên bàn phím
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
